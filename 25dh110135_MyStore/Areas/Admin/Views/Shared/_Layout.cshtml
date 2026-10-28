@@ -3,9 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Quản trị MyStore</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>@ViewBag.Title - My Store</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 50px;
+            background-color: #fff;
+        }
+        /* Thanh menu màu đen giống slide mẫu */
+        .navbar-inverse {
+            background-color: #222;
+            border-color: #080808;
+        }
+
+            .navbar-inverse .navbar-brand,
+            .navbar-inverse .navbar-nav > li > a {
+                color: #9d9d9d;
+            }
+
+                .navbar-inverse .navbar-nav > li > a:hover {
+                    color: #fff;
+                }
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -16,10 +35,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Trang Quản Trị", "Index", "Products", new { area = "Admin" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("My Store", "Index", "Products", new { area = "Admin" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Products", new { area = "Admin" }, null)</li>
                     <li>@Html.ActionLink("Danh mục", "Index", "Categories", new { area = "Admin" }, null)</li>
                     <li>@Html.ActionLink("Sản phẩm", "Index", "Products", new { area = "Admin" }, null)</li>
                     <li>@Html.ActionLink("Khách hàng", "Index", "Customers", new { area = "Admin" }, null)</li>
@@ -30,16 +50,18 @@
         </div>
     </div>
 
-    <div class="container body-content">
+    <div class="container body-content" style="margin-top: 20px;">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Tên ứng dụng</p>
+            <p><strong>Contact</strong></p>
+            <p>Tên các thành viên trong nhóm</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

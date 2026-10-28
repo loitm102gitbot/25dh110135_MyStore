@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using _25dh110135_MyStore.Models;
+using PagedList;
 
 namespace _25dh110135_MyStore.Areas.Admin.Controllers
 {
@@ -15,10 +16,40 @@ namespace _25dh110135_MyStore.Areas.Admin.Controllers
         private MyStoreEntities db = new MyStoreEntities();
 
         // GET: Admin/Customers
-        public ActionResult Index()
+        public ActionResult Index(string searchString, string sortOrder, int? page)
         {
-            var customers = db.Customers.Include(c => c.User);
-            return View(customers.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            var customers = db.Customers.AsQueryable();
+
+            // 1. Tìm kiếm (theo tên, tài khoản hoặc số điện thoại)
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.CustomerName.Contains(searchString)
+                                              || c.Username.Contains(searchString)
+                                              || c.CustomerPhone.Contains(searchString));
+            }
+
+            // 2. Sắp xếp
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    customers = customers.OrderByDescending(c => c.CustomerName);
+                    break;
+                case "name_asc":
+                default:
+                    customers = customers.OrderBy(c => c.CustomerName);
+                    break;
+            }
+
+            // 3. Phân trang
+            int pageSize = 5; // Số dòng trên 1 trang
+            int pageNumber = (page ?? 1);
+
+            ViewBag.CurrentFilter = searchString;
+
+            return View(customers.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Admin/Customers/Details/5
@@ -39,16 +70,13 @@ namespace _25dh110135_MyStore.Areas.Admin.Controllers
         // GET: Admin/Customers/Create
         public ActionResult Create()
         {
-            ViewBag.Username = new SelectList(db.Users, "Username", "Password");
             return View();
         }
 
         // POST: Admin/Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CustomerID,CustomerName,CustomerPhone,CustomerEmail,CustomerAddress,Username")] Customer customer)
+        public ActionResult Create([Bind(Include = "CustomerID,CustomerName,CustomerPhone,CustomerEmail,CustomerAddress,Username,Password")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +85,6 @@ namespace _25dh110135_MyStore.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Username = new SelectList(db.Users, "Username", "Password", customer.Username);
             return View(customer);
         }
 
@@ -73,16 +100,13 @@ namespace _25dh110135_MyStore.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Username = new SelectList(db.Users, "Username", "Password", customer.Username);
             return View(customer);
         }
 
         // POST: Admin/Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CustomerID,CustomerName,CustomerPhone,CustomerEmail,CustomerAddress,Username")] Customer customer)
+        public ActionResult Edit([Bind(Include = "CustomerID,CustomerName,CustomerPhone,CustomerEmail,CustomerAddress,Username,Password")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +114,6 @@ namespace _25dh110135_MyStore.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Username = new SelectList(db.Users, "Username", "Password", customer.Username);
             return View(customer);
         }
 

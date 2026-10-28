@@ -1,58 +1,29 @@
 ﻿@model _25dh110135_MyStore.Models.Customer
+@using _25dh110135_MyStore.Models
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="bg-success">CHI TIẾT KHÁCH HÀNG</h2>
 
 <div>
-    <h4>Customer</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerName)
-        </dt>
+        <dt> Họ tên </dt>
+        <dd> @Html.DisplayFor(model => model.CustomerName) </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CustomerName)
-        </dd>
+        <dt> Số điện thoại </dt>
+        <dd> @Html.DisplayFor(model => model.CustomerPhone) </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerPhone)
-        </dt>
+        <dt> Email </dt>
+        <dd> @Html.DisplayFor(model => model.CustomerEmail) </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CustomerPhone)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerEmail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CustomerEmail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CustomerAddress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.Password)
-        </dd>
-
+        <dt> Địa chỉ </dt>
+        <dd> @Html.DisplayFor(model => model.CustomerAddress) </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CustomerID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.CustomerID }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
 </p>

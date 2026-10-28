@@ -1,57 +1,69 @@
-﻿@model IEnumerable<_25dh110135_MyStore.Models.Customer>
+﻿@model PagedList.IPagedList<_25dh110135_MyStore.Models.Customer>
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerPhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerEmail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.Password)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerEmail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.Password)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CustomerID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CustomerID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CustomerID })
-        </td>
-    </tr>
+<!-- KHU VỰC TÌM KIẾM NGANG HÀNG -->
+@using (Html.BeginForm("Index", "Customers", FormMethod.Get))
+{
+    <div style="margin-bottom: 15px;">
+        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @style = "display:inline-block; width:350px; margin-right: 10px;", @placeholder = "Nhập tên, tài khoản hoặc SĐT..." })
+        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+    </div>
 }
 
+<!-- DÒNG SẮP XẾP -->
+<div style="margin-bottom: 10px; text-align: center;">
+    Sắp xếp theo:
+    @Html.ActionLink("Tên tăng dần", "Index", new { sortOrder = "name_asc", searchString = ViewBag.CurrentFilter }) |
+    @Html.ActionLink("Tên giảm dần", "Index", new { sortOrder = "name_desc", searchString = ViewBag.CurrentFilter })
+</div>
+
+<!-- TIÊU ĐỀ BẢNG -->
+<h2 class="bg-success text-white p-2" style="background-color: #dff0d8; color: #3c763d; padding: 10px; margin-bottom: 0;">DANH SÁCH KHÁCH HÀNG</h2>
+
+<!-- BẢNG DỮ LIỆU -->
+<table class="table table-bordered table-striped table-hover" style="background-color: #f9f9f9;">
+    <tr style="background-color: #dff0d8;">
+        <th>Tên khách hàng</th>
+        <th>Số điện thoại</th>
+        <th>Email</th>
+        <th>Địa chỉ</th>
+        <th>Tài khoản</th>
+        <th>Thao tác</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.CustomerName)</td>
+            <td>@Html.DisplayFor(modelItem => item.CustomerPhone)</td>
+            <td>@Html.DisplayFor(modelItem => item.CustomerEmail)</td>
+            <td>@Html.DisplayFor(modelItem => item.CustomerAddress)</td>
+            <td>@Html.DisplayFor(modelItem => item.Username)</td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.CustomerID }, new { @class = "btn btn-primary btn-sm" })
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.CustomerID }, new { @class = "btn btn-info btn-sm" })
+                @Html.ActionLink("Xóa", "Delete", new { id = item.CustomerID }, new { @class = "btn btn-danger btn-sm" })
+            </td>
+        </tr>
+    }
 </table>
+
+<!-- PHÂN TRANG VÀ NÚT THÊM MỚI GÓC PHẢI -->
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-6">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new
+        {
+            page,
+            searchString = ViewBag.CurrentFilter,
+            sortOrder = ViewBag.CurrentSort
+        }))
+    </div>
+    <div class="col-md-6" style="text-align: right;">
+        @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })
+    </div>
+</div>

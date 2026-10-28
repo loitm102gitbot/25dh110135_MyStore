@@ -1,58 +1,29 @@
 ﻿@model _25dh110135_MyStore.Models.Order
+@using _25dh110135_MyStore.Models
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="bg-success">CHI TIẾT ĐƠN HÀNG</h2>
 
 <div>
-    <h4>Order</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
+        <dt> Khách hàng </dt>
+        <dd> @Html.DisplayFor(model => model.Customer.CustomerName) </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
+        <dt> Ngày đặt hàng </dt>
+        <dd> @Html.DisplayFor(model => model.OrderDate) </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
+        <dt> Trạng thái thanh toán </dt>
+        <dd> @Html.DisplayFor(model => model.PaymentStatus) </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PaymentStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaymentStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AddressDelivery)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AddressDelivery)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Customer.CustomerName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Customer.CustomerName)
-        </dd>
-
+        <dt> Địa chỉ giao hàng </dt>
+        <dd> @Html.DisplayFor(model => model.AddressDelivery) </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.OrderID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.OrderID }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
 </p>

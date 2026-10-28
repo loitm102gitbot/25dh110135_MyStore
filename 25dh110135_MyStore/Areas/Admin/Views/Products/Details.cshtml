@@ -1,58 +1,32 @@
 ﻿@model _25dh110135_MyStore.Models.Product
+@using _25dh110135_MyStore.Models
 
 @{
     ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Details</h2>
+<h2 class="bg-success">CHI TIẾT SẢN PHẨM</h2>
 
 <div>
-    <h4>Product</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
+        <dt> Danh mục </dt>
+        <dd> @Html.DisplayFor(model => model.Category.CategoryName) </dd>
 
+        <dt> Tên sản phẩm </dt>
+        <dd> @Html.DisplayFor(model => model.ProductName) </dd>
+
+        <dt> Đơn giá </dt>
+        <dd> @Html.DisplayFor(model => model.ProductPrice) </dd>
+
+        <dt> Hình ảnh </dt>
         <dd>
-            @Html.DisplayFor(model => model.ProductName)
+            <img src="@Url.Content(Model.ProductImage)" height="150" />
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductDecription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductDecription)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductPrice)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductPrice)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductImage)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductImage)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.ProductID }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
 </p>
